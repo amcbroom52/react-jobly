@@ -1,4 +1,6 @@
-const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
+'use strict';
+// TODO: import.meta.env
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL || "http://localhost:3001";
 
 /** API Class.
  *
@@ -52,7 +54,29 @@ class JoblyApi {
     return res.company;
   }
 
-  // obviously, you'll add a lot here ...
+  /** Takes query string.
+   * Returns array of companies like
+   * [{ handle, name, description, numEmployees, logoUrl }...].
+   */
+
+  static async getCompanies(query='') {
+    const q = new URLSearchParams({nameLike: query});
+    const endpoint = query ? `companies?${q}` : 'companies';
+    const res = await this.request(endpoint);
+    return res.companies;
+  }
+
+  /** Takes query string.
+   * Returns array of jobs like
+   * [ { id, title, salary, equity, companyHandle, companyName }, ...].
+   */
+
+  static async getJobs(query) {
+    const q = new URLSearchParams({title: query});
+    const endpoint = query ? `jobs?${q}` : 'jobs';
+    const res = await this.request(endpoint);
+    return res.jobs;
+  }
 }
 
 export default JoblyApi;

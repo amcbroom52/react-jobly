@@ -1,0 +1,28 @@
+.NavBar {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
+.NavBar-link, .NavBar-link-home {
+  text-decoration: none;
+}
+
+.NavBar-link-home {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.NavBar-link {
+  color: gray;
+}
+
+.NavBar-right {
+  display: flex;
+  gap: 20px;
+}
+
+.NavBar-right .active {
+  color: black;
+  font-weight: bold;
+}
