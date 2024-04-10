@@ -8,6 +8,7 @@ import LoadingScreen from "../common/LoadingScreen";
  *
  * State:
  * - jobs: {data: [job...], isLoading}
+ * - searchQuery
  *
  * Props: none
  *

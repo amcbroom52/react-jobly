@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import JoblyApi from "../api/api";
 import SearchForm from "../common/SearchForm";
 import CompanyCardList from "./CompanyCardList";
 import LoadingScreen from "../common/LoadingScreen";
+import PaginationButton from "../common/PaginationButton";
+
+const CARDS_PER_PAGE = 20;
 
 /** Component for searching and rendering list of company cards.
  *
  * State:
  * - companies: {data: [company...], isLoading}
+ * - searchQuery
  *
  * Props: none
  *
@@ -20,6 +25,10 @@ function CompanyList() {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const params = new URL(document.location).searchParams;
+  const [searchParams, setSearchParams] = useSearchParams({page: params.get('page')});
+  const [pageNum, setPageNum] = useState(Number(searchParams.get('page')) || 1);
+
   console.log("in rendering CompanyList");
 
   useEffect(
@@ -40,11 +49,20 @@ function CompanyList() {
     setSearchQuery(query.trim());
   }
 
+  function getPrevPage() {
+    setSearchParams({page: pageNum - 1});
+    setPageNum(pageNum => pageNum - 1);
+  }
+
+  function getNextPage() {
+    setSearchParams({page: pageNum + 1});
+    setPageNum(pageNum => pageNum + 1);
+  }
+
   if (companies.isLoading) return <LoadingScreen />;
 
   return (
     <div>
-      {/* Why rerender? */}
       <SearchForm handleSearch={fetchCompanies} />
 
       <h1>
@@ -52,9 +70,13 @@ function CompanyList() {
       </h1>
 
       <div>
-        {companies.data.length !== 0
-          ? <CompanyCardList companies={companies.data} />
+        {companies.data.length !== 0 && pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE)
+          ? <CompanyCardList companies={companies.data.slice(CARDS_PER_PAGE * (pageNum - 1), CARDS_PER_PAGE * pageNum) } />
           : <h3>Sorry, no results found!</h3>}
+      </div>
+      <div>
+        {pageNum > 1 && <PaginationButton getPage={getPrevPage} text='Previous page'/>}
+        {pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE) && <PaginationButton getPage={getNextPage} text='Next page'/>}
       </div>
     </div>
   );

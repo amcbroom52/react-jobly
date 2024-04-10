@@ -37,6 +37,7 @@ function SearchForm({ handleSearch }) {
     evt.preventDefault();
     handleSearch(inputValue);
     setInputValue(inputValue.trim());
+    debounceLiveSearch.cancel();
   }
 
   return (
