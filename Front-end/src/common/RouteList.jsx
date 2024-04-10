@@ -10,7 +10,9 @@ import ProfileForm from '../user/ProfileForm';
 
 /** Component to hold all routes.
  *
- * State: none
+ * State:
+ * - login(): fn to call in parent
+ * - signup(): fn to call in parent
  *
  * Props: none
  *
@@ -18,7 +20,7 @@ import ProfileForm from '../user/ProfileForm';
  */
 
 
-function RouteList() {
+function RouteList({login, signup}) {
     console.log("in rendering RouteList");
 
     return (
@@ -27,8 +29,8 @@ function RouteList() {
             <Route path='/companies' element={<CompanyList />}/>
             <Route path='/companies/:handle' element={<CompanyDetail />}/>
             <Route path='/jobs' element={<JobList />}/>
-            <Route path='/login' element={<LoginForm />} />
-            <Route path='/signup' element={<SignupForm />} />
+            <Route path='/login' element={<LoginForm loginUser={login}/>} />
+            <Route path='/signup' element={<SignupForm signupUser={signup}/>} />
             <Route path='/profile' element={<ProfileForm />} />
             <Route path="*" element={<NotFound />}/>
         </Routes>

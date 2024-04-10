@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useParams, Navigate } from "react-router-dom";
 import JoblyApi from "../api/api";
 import JobCardList from "../jobs/JobCardList";
 import LoadingScreen from "../common/LoadingScreen";
+import userContext from "../user/userContext";
 
 /** Component for rendering company information.
  *
@@ -20,6 +21,7 @@ function CompanyDetail() {
     data: null,
     isLoading: true
   });
+  const {user} = useContext(userContext);
   console.log("in rendering CompanyDetail");
 
 
@@ -37,6 +39,8 @@ function CompanyDetail() {
     }
     fetchCompany();
   }, []);
+
+  if (!user) return <Navigate to='/'/>
 
   if (company.isLoading) return <LoadingScreen />;
 

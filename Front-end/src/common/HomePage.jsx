@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 /** Component for homepage.
  *
  * State: none
@@ -7,15 +9,27 @@
  * App -> Home
  */
 
-function HomePage() {
-    console.log("in rendering HomePage");
+import { useContext } from "react";
+import userContext from "../user/userContext";
 
-    return (
+function HomePage() {
+  console.log("in rendering HomePage");
+  const { user } = useContext(userContext);
+
+  return (
+    <div>
+      <h1>Jobly</h1>
+      <h3>All the jobs in one, convenient place.</h3>
+      {user ? (
+        <h3>Welcome back, {user.username}.</h3>
+      ) : (
         <div>
-            <h1>Jobly</h1>
-            <h2>All the jobs in one, convenient place.</h2>
+          <Link className="btn btn-primary" to='/login'>Log in</Link>
+          <Link className="btn btn-primary" to='/signup'>Sign up</Link>
         </div>
-    )
+      )}
+    </div>
+  );
 }
 
 export default HomePage;

@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useSearchParams, Navigate } from "react-router-dom";
 import JoblyApi from "../api/api";
 import SearchForm from "../common/SearchForm";
 import CompanyCardList from "./CompanyCardList";
 import LoadingScreen from "../common/LoadingScreen";
 import PaginationButton from "../common/PaginationButton";
+import userContext from "../user/userContext";
 
 const CARDS_PER_PAGE = 20;
 
@@ -28,6 +29,7 @@ function CompanyList() {
   const params = new URL(document.location).searchParams;
   const [searchParams, setSearchParams] = useSearchParams({page: params.get('page')});
   const [pageNum, setPageNum] = useState(Number(searchParams.get('page')) || 1);
+  const {user} = useContext(userContext);
 
   console.log("in rendering CompanyList");
 
@@ -58,6 +60,8 @@ function CompanyList() {
     setSearchParams({page: pageNum + 1});
     setPageNum(pageNum => pageNum + 1);
   }
+
+  if (!user) return <Navigate to='/'/>
 
   if (companies.isLoading) return <LoadingScreen />;
 

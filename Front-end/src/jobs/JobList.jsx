@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 import SearchForm from "../common/SearchForm";
 import JobCardList from "./JobCardList";
 import JoblyApi from "../api/api";
 import LoadingScreen from "../common/LoadingScreen";
+import userContext from "../user/userContext";
 
 /** Component for searching and rendering list of job cards.
  *
@@ -21,6 +23,7 @@ function JobList() {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const {user} = useContext(userContext);
   console.log("in rendering JobList");
 
   useEffect(
@@ -40,6 +43,8 @@ function JobList() {
     });
     setSearchQuery(query.trim());
   }
+
+  if (!user) return <Navigate to='/'/>;
 
   //   if (jobs.isLoading) return <h3>Loading...</h3>;
   if (jobs.isLoading) return <LoadingScreen />;

@@ -13,9 +13,10 @@ class JoblyApi {
   // Remember, the backend needs to be authorized with a token
   // We're providing a token you can use to interact with the backend API
   // DON'T MODIFY THIS TOKEN
-  static token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-    "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-    "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  // static token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+  //   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+  //   "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+  static token = null;
 
   static async request(endpoint, data = {}, method = "GET") {
     const url = new URL(`${BASE_URL}/${endpoint}`);
@@ -73,6 +74,38 @@ class JoblyApi {
     const data = query ? {title: query} : {};
     const res = await this.request("jobs", data);
     return res.jobs;
+  }
+
+  /** Takes username, password. Validates user credentials and returns JWT token.
+   */
+
+  static async login(username, password) {
+    const data = { username, password }
+    const respData = await this.request("auth/token", data, 'POST');
+    if ('token' in respData) this.token = respData.token;
+    return respData;
+  }
+
+  /** Creates new user.
+   * Takes object like {username, password, firstName, lastName, email}.
+   * Returns JWT token.
+   */
+
+  static async signup(inputValues) {
+    const respData =  await this.request("auth/register", inputValues, 'POST');
+    if ('token' in respData) this.token = respData.token;
+    return respData;
+  }
+
+  /** Gets user info.
+   * Takes username.
+   * Returns object like { username, firstName, lastName, email, isAdmin, jobs }
+   * where jobs is { id, title, companyHandle, companyName, state }
+   */
+
+  static async getUser(username) {
+    const res = await this.request(`users/${username}`);
+    return res.user;
   }
 }
 
