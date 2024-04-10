@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import SearchForm from "./SearchForm";
+import SearchForm from "../common/SearchForm";
 import JobCardList from "./JobCardList";
-import JoblyApi from "./api";
+import JoblyApi from "../api/api";
+import LoadingScreen from "../common/LoadingScreen";
 
 /** Component for searching and rendering list of job cards.
  *
@@ -19,12 +20,14 @@ function JobList() {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  console.log("in rendering JobList");
 
   useEffect(
     function fetchJobsOnMount() {
       fetchJobs(searchQuery);
+      console.log("in useEffect JobList");
     },
-    [searchQuery]
+    []
   );
 
   /** Takes query string, fetches jobs, and set jobs. */
@@ -34,37 +37,23 @@ function JobList() {
       data: jobs,
       isLoading: false,
     });
-  }
-
-  /** Set jobs and searchQuery. */
-  function handleSearch(query) {
-    if (searchQuery !== query) {
-      setJobs({
-        data: null,
-        isLoading: true,
-      });
-      setSearchQuery(query);
-    }
+    setSearchQuery(query);
   }
 
   //   if (jobs.isLoading) return <h3>Loading...</h3>;
-  if (jobs.isLoading) {
-    return (
-      <div className="spinner-border text-primary" role="status">
-        <span className="sr-only">Loading...</span>
-      </div>
-    );
-  }
+  if (jobs.isLoading) return <LoadingScreen />;
 
   return (
     <div>
-      <SearchForm handleSearch={handleSearch} />
+      <SearchForm handleSearch={fetchJobs} />
       <h1>
         {searchQuery ? `Search Results for '${searchQuery}'` : "All Jobs"}
       </h1>
 
       <div>
-        <JobCardList jobs={jobs.data} />
+        {jobs.data.length !== 0
+          ? <JobCardList jobs={jobs.data} />
+          : <h3>Sorry, no results found!</h3>}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import CompanyCard from "./CompanyCard"
+import CompanyCard from "./CompanyCard";
 
 /** Component to render list of company cards.
  *
@@ -11,13 +11,15 @@ import CompanyCard from "./CompanyCard"
  */
 
 function CompanyCardList({ companies }) {
-    return (
-        <div>
-          {companies.map((c) =>
-            <CompanyCard key={c.handle} company={c} />
-          )}
-        </div>
-      );
+  console.log("in rendering CompanyCardList");
+
+  return (
+    <div>
+      {companies.map((c) =>
+        <CompanyCard key={c.handle} company={c} />
+      )}
+    </div>
+  );
 }
 
 export default CompanyCardList;

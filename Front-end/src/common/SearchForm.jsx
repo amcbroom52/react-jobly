@@ -13,6 +13,7 @@ import { useState } from "react";
 
 function SearchForm({ handleSearch }) {
   const [inputValue, setInputValue] = useState("");
+  console.log("in rendering SearchForm");
 
   /** Set inputValue. */
   function handleChange(evt) {
@@ -22,12 +23,17 @@ function SearchForm({ handleSearch }) {
   /** Call parent handleSearch function. */
   function handleSubmit(evt) {
     evt.preventDefault();
-    handleSearch(inputValue);
+    handleSearch(inputValue.trim());
+    setInputValue(inputValue.trim());
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" value={inputValue} onChange={handleChange}/>
+      <input
+        type="text"
+        value={inputValue}
+        onChange={handleChange}
+        placeholder="Enter Search Term..."/>
       <button type="submit">Search</button>
     </form>
   );

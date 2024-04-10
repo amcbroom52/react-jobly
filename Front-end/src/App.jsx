@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
-import NavBar from "./NavBar";
-import RouteList from "./RouteList";
+import NavBar from "./common/NavBar";
+import RouteList from "./common/RouteList";
 
 /** Component for entire page.
  *
@@ -11,6 +11,8 @@ import RouteList from "./RouteList";
  */
 
 function App() {
+  console.log("in rendering App");
+
   return (
     <div className="App">
       <BrowserRouter>

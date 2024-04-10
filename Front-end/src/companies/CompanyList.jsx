@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import JoblyApi from "./api";
-import SearchForm from "./SearchForm";
+import JoblyApi from "../api/api";
+import SearchForm from "../common/SearchForm";
 import CompanyCardList from "./CompanyCardList";
+import LoadingScreen from "../common/LoadingScreen";
 
 /** Component for searching and rendering list of company cards.
  *
@@ -19,46 +20,41 @@ function CompanyList() {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  console.log("in rendering CompanyList");
 
   useEffect(
     function fetchCompaniesOnMount() {
-      fetchCompanies(searchQuery);
+      fetchCompanies();
+      console.log("in useEffect CompanyList");
     },
-    [searchQuery]
+    []
   );
 
-   /** Takes query string, fetches companies, and set companies. */
+  /** Takes query string, fetches companies, and set companies. */
   async function fetchCompanies(query = "") {
     const companies = await JoblyApi.getCompanies(query);
     setCompanies({
       data: companies,
       isLoading: false,
     });
+    setSearchQuery(query);
   }
 
-  /** Set jobs and searchQuery. */
-  function handleSearch(query) {
-    if (searchQuery !== query) {
-      setCompanies({
-        data: null,
-        isLoading: true,
-      });
-      setSearchQuery(query);
-    }
-  }
-
-  if (companies.isLoading) return <h3>Loading...</h3>;
+  if (companies.isLoading) return <LoadingScreen />;
 
   return (
     <div>
-      <SearchForm handleSearch={handleSearch} />
+      {/* Why rerender? */}
+      <SearchForm handleSearch={fetchCompanies} />
 
       <h1>
         {searchQuery ? `Search Results for '${searchQuery}'` : "All Companies"}
       </h1>
 
       <div>
-        <CompanyCardList companies={companies.data} />
+        {companies.data.length !== 0
+          ? <CompanyCardList companies={companies.data} />
+          : <h3>Sorry, no results found!</h3>}
       </div>
     </div>
   );

@@ -9,6 +9,8 @@ import "./NavBar.css";
  */
 
 function NavBar() {
+  console.log("in rendering NavBar");
+
   return (
     <div className="NavBar">
       <div className="NavBar-left">

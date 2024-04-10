@@ -11,7 +11,8 @@ import JobCard from "./JobCard";
  */
 
 function JobCardList({ jobs }) {
-  console.log(jobs);
+  console.log("in rendering JobCardList");
+
   return (
     <div>
       {jobs.map((j) =>

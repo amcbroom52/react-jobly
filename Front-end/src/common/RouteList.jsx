@@ -1,8 +1,9 @@
 import {Routes, Route} from 'react-router-dom';
 import HomePage from './HomePage';
-import CompanyDetail from './CompanyDetail';
-import CompanyList from './CompanyList';
-import JobList from './JobList';
+import CompanyDetail from '../companies/CompanyDetail';
+import CompanyList from '../companies/CompanyList';
+import JobList from '../jobs/JobList';
+import NotFound from './NotFound';
 
 /** Component to hold all routes.
  *
@@ -13,15 +14,17 @@ import JobList from './JobList';
  * App -> RouteList -> {HomePage, CompanyList, CompanyDetail, JobList}
  */
 
-// TODO: for 404 w *
 
 function RouteList() {
+    console.log("in rendering RouteList");
+
     return (
         <Routes>
             <Route path='/' element={<HomePage />}/>
             <Route path='/companies' element={<CompanyList />}/>
             <Route path='/companies/:handle' element={<CompanyDetail />}/>
             <Route path='/jobs' element={<JobList />}/>
+            <Route path="*" element={<NotFound />}/>
         </Routes>
     )
 }

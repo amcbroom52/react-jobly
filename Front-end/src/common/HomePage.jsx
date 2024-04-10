@@ -8,6 +8,8 @@
  */
 
 function HomePage() {
+    console.log("in rendering HomePage");
+
     return (
         <div>
             <h1>Jobly</h1>

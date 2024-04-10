@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import JoblyApi from "./api";
-import JobCardList from "./JobCardList";
+import JoblyApi from "../api/api";
+import JobCardList from "../jobs/JobCardList";
+import LoadingScreen from "../common/LoadingScreen";
 
 /** Component for rendering company information.
  *
@@ -19,6 +20,8 @@ function CompanyDetail() {
     data: null,
     isLoading: true
   });
+  console.log("in rendering CompanyDetail");
+
 
   const { handle } = useParams();
 
@@ -29,17 +32,19 @@ function CompanyDetail() {
         data: company,
         isLoading: false
       });
+      console.log("in useEffect CompanyDetail");
+
     }
     fetchCompany();
   }, []);
 
-  if(company.isLoading) return <h2>Loading...</h2>
+  if (company.isLoading) return <LoadingScreen />;
 
   return (
     <div>
       <h3>{company.data.name}</h3>
       <h5>{company.data.description}</h5>
-      <JobCardList jobs={company.data.jobs}/>
+      <JobCardList jobs={company.data.jobs} />
     </div>
   );
 }

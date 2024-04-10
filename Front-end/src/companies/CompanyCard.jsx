@@ -12,6 +12,8 @@ import "./CompanyCard.css";
  */
 
 function CompanyCard({ company }) {
+  console.log("in rendering CompanyCard");
+
   return (
     <div className="CompanyCard">
       <Link to={`/companies/${company.handle}`}>
