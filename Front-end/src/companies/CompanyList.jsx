@@ -70,7 +70,7 @@ function CompanyList() {
       </h1>
 
       <div>
-        {companies.data.length !== 0 && pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE)
+        {companies.data.length !== 0 && pageNum <= Math.ceil(companies.data.length / CARDS_PER_PAGE)
           ? <CompanyCardList companies={companies.data.slice(CARDS_PER_PAGE * (pageNum - 1), CARDS_PER_PAGE * pageNum) } />
           : <h3>Sorry, no results found!</h3>}
       </div>

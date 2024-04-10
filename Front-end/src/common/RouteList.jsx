@@ -4,6 +4,9 @@ import CompanyDetail from '../companies/CompanyDetail';
 import CompanyList from '../companies/CompanyList';
 import JobList from '../jobs/JobList';
 import NotFound from './NotFound';
+import LoginForm from '../user/LoginForm';
+import SignupForm from '../user/SignupForm';
+import ProfileForm from '../user/ProfileForm';
 
 /** Component to hold all routes.
  *
@@ -24,6 +27,9 @@ function RouteList() {
             <Route path='/companies' element={<CompanyList />}/>
             <Route path='/companies/:handle' element={<CompanyDetail />}/>
             <Route path='/jobs' element={<JobList />}/>
+            <Route path='/login' element={<LoginForm />} />
+            <Route path='/signup' element={<SignupForm />} />
+            <Route path='/profile' element={<ProfileForm />} />
             <Route path="*" element={<NotFound />}/>
         </Routes>
     )
