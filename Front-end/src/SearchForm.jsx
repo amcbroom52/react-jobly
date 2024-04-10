@@ -14,10 +14,12 @@ import { useState } from "react";
 function SearchForm({ handleSearch }) {
   const [inputValue, setInputValue] = useState("");
 
+  /** Set inputValue. */
   function handleChange(evt) {
     setInputValue(evt.target.value);
   }
 
+  /** Call parent handleSearch function. */
   function handleSubmit(evt) {
     evt.preventDefault();
     handleSearch(inputValue);

@@ -1,3 +1,5 @@
+import './JobCard.css';
+
 /** Component informational card about job.
  *
  * State: none
@@ -10,7 +12,7 @@
 
 function JobCard({ job }) {
   return (
-    <div>
+    <div className='JobCard'>
       <div>
       <h5>{job.title}</h5>
       <p>{job.companyName}</p>
