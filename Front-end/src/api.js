@@ -60,9 +60,8 @@ class JoblyApi {
    */
 
   static async getCompanies(query='') {
-    const q = new URLSearchParams({nameLike: query});
-    const endpoint = query ? `companies?${q}` : 'companies';
-    const res = await this.request(endpoint);
+    const data = query ? {nameLike: query} : {};
+    const res = await this.request("companies", data);
     return res.companies;
   }
 
@@ -72,9 +71,8 @@ class JoblyApi {
    */
 
   static async getJobs(query) {
-    const q = new URLSearchParams({title: query});
-    const endpoint = query ? `jobs?${q}` : 'jobs';
-    const res = await this.request(endpoint);
+    const data = query ? {title: query} : {};
+    const res = await this.request("jobs", data);
     return res.jobs;
   }
 }

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 /** Component to render search form.
  *
  * State:
@@ -10,21 +12,21 @@
  */
 
 function SearchForm({ handleSearch }) {
-  [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState("");
 
   function handleChange(evt) {
     setInputValue(evt.target.value);
   }
 
-  function handleClick(evt) {
+  function handleSubmit(evt) {
     evt.preventDefault();
     handleSearch(inputValue);
   }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input type="text" value={inputValue} onChange={handleChange}/>
-      <button onClick={handleClick}>Search</button>
+      <button type="submit">Search</button>
     </form>
   );
 }

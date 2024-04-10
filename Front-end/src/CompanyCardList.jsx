@@ -13,9 +13,9 @@ import CompanyCard from "./CompanyCard"
 function CompanyCardList({ companies }) {
     return (
         <div>
-          {companies.map((c) => {
-            <CompanyCard key={c.id} job={j} />;
-          })}
+          {companies.map((c) =>
+            <CompanyCard key={c.handle} company={c} />
+          )}
         </div>
       );
 }
