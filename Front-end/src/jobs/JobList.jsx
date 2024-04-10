@@ -37,7 +37,7 @@ function JobList() {
       data: jobs,
       isLoading: false,
     });
-    setSearchQuery(query);
+    setSearchQuery(query.trim());
   }
 
   //   if (jobs.isLoading) return <h3>Loading...</h3>;

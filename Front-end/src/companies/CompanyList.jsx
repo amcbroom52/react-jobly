@@ -37,7 +37,7 @@ function CompanyList() {
       data: companies,
       isLoading: false,
     });
-    setSearchQuery(query);
+    setSearchQuery(query.trim());
   }
 
   if (companies.isLoading) return <LoadingScreen />;
