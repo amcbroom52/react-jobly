@@ -38,7 +38,7 @@ function NavBar({ logout }) {
   }
 
   return (
-    <div className="NavBar">
+    <div className="NavBar navbar navbar-expand-lg bg-primary">
       <div className="NavBar-left">
         <NavLink className="NavBar-link-home" to="/">Jobly</NavLink>
       </div>

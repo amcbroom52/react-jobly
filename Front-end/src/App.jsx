@@ -76,6 +76,7 @@ function App() {
     }));
   }
 
+  // return <LoadingScreen />;
   if (token && !user) return <LoadingScreen />;
 
   return (

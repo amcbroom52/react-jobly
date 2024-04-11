@@ -5,6 +5,7 @@ import JobCardList from "../jobs/JobCardList";
 import LoadingScreen from "../common/LoadingScreen";
 import userContext from "../user/userContext";
 import ErrorPage from "../common/ErrorPage";
+import "./CompanyDetail.css";
 
 /** Component for rendering company information.
  *
@@ -50,7 +51,7 @@ function CompanyDetail() {
   if (company.isLoading) return <LoadingScreen />;
 
   return (
-    <div>
+    <div className="col-9 CompanyDetail">
       <h3>{company.data.name}</h3>
       <h5>{company.data.description}</h5>
       <JobCardList jobs={company.data.jobs} />

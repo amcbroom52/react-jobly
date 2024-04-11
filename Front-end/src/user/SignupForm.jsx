@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Alert from "../common/Alert";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
+import "./SignupForm.css";
 
 const INITIAL_STATE = {
   username: "",
@@ -45,7 +46,7 @@ function SignupForm({ signupUser }) {
   }
 
   return (
-    <div className="LoginPage">
+    <div className="SignupPage col-9">
       <h1>Sign Up</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>
@@ -54,6 +55,7 @@ function SignupForm({ signupUser }) {
           name="username"
           value={inputValues.username}
           onChange={handleChange}
+          className="SignupPage-input form-control"
         />
         <label htmlFor="password">Password</label>
         <input
@@ -61,6 +63,7 @@ function SignupForm({ signupUser }) {
           name="password"
           value={inputValues.password}
           onChange={handleChange}
+          className="SignupPage-input form-control"
         />
         <label htmlFor="firstName">First Name</label>
         <input
@@ -68,6 +71,7 @@ function SignupForm({ signupUser }) {
           name="firstName"
           value={inputValues.firstName}
           onChange={handleChange}
+          className="SignupPage-input form-control"
         />
         <label htmlFor="lastName">Last Name</label>
         <input
@@ -75,6 +79,7 @@ function SignupForm({ signupUser }) {
           name="lastName"
           value={inputValues.lastName}
           onChange={handleChange}
+          className="SignupPage-input form-control"
         />
         <label htmlFor="email">Email</label>
         <input
@@ -82,8 +87,11 @@ function SignupForm({ signupUser }) {
           name="email"
           value={inputValues.email}
           onChange={handleChange}
+          className="SignupPage-input form-control"
         />
-        <button type="submit">Submit</button>
+        <button type="submit" className="btn btn-primary SignupPage-btn">
+          Submit
+        </button>
       </form>
       {errors.map((e) => <Alert key={uuid()} text={e} type="danger" />)}
     </div>

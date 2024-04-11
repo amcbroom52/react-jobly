@@ -1,7 +1,11 @@
+import "./LoadingScreen.css";
+
 function LoadingScreen() {
   return (
-    <div className="spinner-border text-primary LoadingScreen" role="status">
-      <span className="sr-only">Loading...</span>
+    <div className="LoadingScreen">
+      <div className="spinner-border text-primary LoadingScreen-Spinner" role="status">
+        <span className="sr-only LoadingScreen-span">Loading...</span>
+      </div>
     </div>
   );
 }

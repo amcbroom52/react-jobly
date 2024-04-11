@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./HomePage.css";
 
 /** Component for homepage.
  *
@@ -17,13 +18,13 @@ function HomePage() {
   const { user } = useContext(userContext);
 
   return (
-    <div>
+    <div className="HomePage col-10">
       <h1>Jobly</h1>
       <h3>All the jobs in one, convenient place.</h3>
       {user ? (
         <h3>Welcome back, {user.firstName}.</h3>
       ) : (
-        <div>
+        <div className="HomePage-links">
           <Link className="btn btn-primary" to='/login'>Log in</Link>
           <Link className="btn btn-primary" to='/signup'>Sign up</Link>
         </div>

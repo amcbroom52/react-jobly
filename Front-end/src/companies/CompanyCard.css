@@ -4,7 +4,28 @@
 }
 
 .CompanyCard {
-  border: 1px black solid;
   margin: 20px;
-  padding: 2px;
+  position: relative;
+  color: black;
+  background-color: white;
+}
+
+.CompanyCard-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: black;
+}
+
+.CompanyCard-text {
+  color: black;
+
+}
+
+.CompanyCard-img {
+  position: relative;
+  left: 5px;
+  right: 5px;
+  width: 4rem;
+  height: auto;
 }

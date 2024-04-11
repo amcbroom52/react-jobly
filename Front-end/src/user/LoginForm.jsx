@@ -1,12 +1,13 @@
 import { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Alert from "../common/Alert";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
+import "./LoginForm.css";
 
 const INITIAL_STATE = {
     username: '',
     password: ''
-}
+};
 
 /** Component for Login form
  *
@@ -17,7 +18,7 @@ const INITIAL_STATE = {
  *
  * App -> LoginForm
  */
-function LoginForm({loginUser}) {
+function LoginForm({ loginUser }) {
     const [inputValues, setInputValues] = useState(INITIAL_STATE);
     const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
@@ -42,7 +43,7 @@ function LoginForm({loginUser}) {
     }
 
     return (
-        <div className="LoginPage">
+        <div className="LoginPage col-9">
             <h1>Log In</h1>
             <form onSubmit={handleSubmit}>
                 <label htmlFor="username">Username</label>
@@ -51,6 +52,7 @@ function LoginForm({loginUser}) {
                     name='username'
                     value={inputValues.username}
                     onChange={handleChange}
+                    className="LoginPage-input form-control"
                 />
                 <label htmlFor="password">Password</label>
                 <input
@@ -58,15 +60,18 @@ function LoginForm({loginUser}) {
                     name='password'
                     value={inputValues.password}
                     onChange={handleChange}
+                    className="LoginPage-input form-control"
                 />
-                <button type='submit'>Submit</button>
+                <button type='submit' className="btn btn-primary LoginPage-btn">
+                    Submit
+                </button>
             </form>
             {errors.map(e =>
                 <Alert key={uuid()} text={e} type='danger' />
             )}
         </div>
 
-    )
+    );
 
 }
 

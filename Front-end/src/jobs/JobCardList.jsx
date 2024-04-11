@@ -1,4 +1,5 @@
 import JobCard from "./JobCard";
+import "./JobCardList.css";
 
 /** Component to render list of job cards.
  *
@@ -14,7 +15,7 @@ function JobCardList({ jobs }) {
   console.log("in rendering JobCardList");
 
   return (
-    <div>
+    <div className="JobCardList">
       {jobs.map((j) =>
         <JobCard key={j.id} job={j} />
       )}

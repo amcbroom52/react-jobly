@@ -2,19 +2,25 @@
   display: flex;
   justify-content: space-between;
   padding: 16px;
+  margin-bottom: 25px;
 }
 
-.NavBar-link, .NavBar-link-home {
+.NavBar-link,
+.NavBar-link-home {
   text-decoration: none;
 }
 
 .NavBar-link-home {
   font-size: 1.5rem;
-  color: black;
+  color: white;
 }
 
 .NavBar-link {
-  color: gray;
+  color: rgb(255, 255, 255, 0.55);
+}
+
+.NavBar-link:hover{
+  color: white;
 }
 
 .NavBar-right {
@@ -23,6 +29,6 @@
 }
 
 .NavBar-right .active {
-  color: black;
-  font-weight: bold;
+  color: white;
+  font-weight: 400;
 }

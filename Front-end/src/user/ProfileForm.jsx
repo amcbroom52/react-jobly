@@ -2,7 +2,8 @@ import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import userContext from "./userContext";
 import Alert from "../common/Alert";
-import {v4 as uuid} from 'uuid';
+import { v4 as uuid } from 'uuid';
+import "./ProfileForm.css";
 
 /** Component for Profile edit form
  *
@@ -36,14 +37,14 @@ function ProfileForm({ updateUser }) {
     evt.preventDefault();
     try {
       await updateUser(inputValues);
-      setAlerts([{text: 'Updated succesfully.', type: 'success'}]);
+      setAlerts([{ text: 'Updated succesfully.', type: 'success' }]);
     } catch (err) {
-      setAlerts(err.map(e => ({text: e, type: 'danger'})));
+      setAlerts(err.map(e => ({ text: e, type: 'danger' })));
     }
   }
 
   return (
-    <div className="LoginPage">
+    <div className="ProfilePage col-9">
       <h1>Profile</h1>
       <form onSubmit={handleSubmit}>
         <label htmlFor="username">Username</label>
@@ -52,6 +53,7 @@ function ProfileForm({ updateUser }) {
           name='username'
           value={inputValues.username}
           disabled
+          className="ProfilePage-input form-control"
         />
         <label htmlFor="firstName">First Name</label>
         <input
@@ -59,6 +61,7 @@ function ProfileForm({ updateUser }) {
           name='firstName'
           value={inputValues.firstName}
           onChange={handleChange}
+          className="ProfilePage-input form-control"
         />
         <label htmlFor="lastName">Last Name</label>
         <input
@@ -66,18 +69,23 @@ function ProfileForm({ updateUser }) {
           name='lastName'
           value={inputValues.lastName}
           onChange={handleChange}
+          className="ProfilePage-input form-control"
         />
         <label htmlFor="email">Email</label>
         <input
           type="email"
           name='email'
           value={inputValues.email}
-          onChange={handleChange} />
-        <button type="submit">Save Changes</button>
+          onChange={handleChange}
+          className="ProfilePage-input form-control"
+        />
+        <button type="submit" className="btn btn-primary ProfilePage-btn">
+          Save Changes
+        </button>
       </form>
       {alerts.map(a =>
-                <Alert key={uuid()} text={a.text} type={a.type} />
-            )}
+        <Alert key={uuid()} text={a.text} type={a.type} />
+      )}
     </div>
   );
 }

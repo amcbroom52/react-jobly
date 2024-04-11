@@ -6,6 +6,7 @@ import CompanyCardList from "./CompanyCardList";
 import LoadingScreen from "../common/LoadingScreen";
 import PaginationButton from "../common/PaginationButton";
 import userContext from "../user/userContext";
+import "./CompanyList.css";
 
 const CARDS_PER_PAGE = 20;
 
@@ -27,9 +28,9 @@ function CompanyList() {
   });
   const [searchQuery, setSearchQuery] = useState("");
   const params = new URL(document.location).searchParams;
-  const [searchParams, setSearchParams] = useSearchParams({page: params.get('page')});
+  const [searchParams, setSearchParams] = useSearchParams({ page: params.get('page') });
   const [pageNum, setPageNum] = useState(Number(searchParams.get('page')) || 1);
-  const {user} = useContext(userContext);
+  const { user } = useContext(userContext);
 
   console.log("in rendering CompanyList");
 
@@ -52,33 +53,33 @@ function CompanyList() {
   }
 
   function getPrevPage() {
-    setSearchParams({page: pageNum - 1});
+    setSearchParams({ page: pageNum - 1 });
     setPageNum(pageNum => pageNum - 1);
   }
 
   function getNextPage() {
-    setSearchParams({page: pageNum + 1});
+    setSearchParams({ page: pageNum + 1 });
     setPageNum(pageNum => pageNum + 1);
   }
 
   if (companies.isLoading) return <LoadingScreen />;
 
   return (
-    <div>
+    <div className="CompanyList col-10">
       <SearchForm handleSearch={fetchCompanies} />
 
-      <h1>
+      <h1 className="CompanyList-header">
         {searchQuery ? `Search Results for '${searchQuery}'` : "All Companies"}
       </h1>
 
       <div>
         {companies.data.length !== 0 && pageNum <= Math.ceil(companies.data.length / CARDS_PER_PAGE)
-          ? <CompanyCardList companies={companies.data.slice(CARDS_PER_PAGE * (pageNum - 1), CARDS_PER_PAGE * pageNum) } />
+          ? <CompanyCardList companies={companies.data.slice(CARDS_PER_PAGE * (pageNum - 1), CARDS_PER_PAGE * pageNum)} />
           : <h3>Sorry, no results found!</h3>}
       </div>
       <div>
-        {pageNum > 1 && <PaginationButton getPage={getPrevPage} text='Previous page'/>}
-        {pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE) && <PaginationButton getPage={getNextPage} text='Next page'/>}
+        {pageNum > 1 && <PaginationButton getPage={getPrevPage} text='Previous page' />}
+        {pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE) && <PaginationButton getPage={getNextPage} text='Next page' />}
       </div>
     </div>
   );

@@ -15,15 +15,17 @@ function JobCard({ job }) {
   console.log("in rendering JobCard");
 
   return (
-    <div className='JobCard'>
-      <div>
-        <h5>{job.title}</h5>
-        <p>{job.companyName}</p>
-      </div>
-      <div>
-        {job.salary &&
-          <p> {`Salary: ${SalaryFormatter.format(job.salary)}`}</p>}
-        <p>Equity: {job.equity}</p>
+    <div className='JobCard card'>
+      <div className='card-body'>
+        <div className='JobCard-header'>
+          <h5 className='card-title'>{job.title}</h5>
+          <p className='card-subtitle'>{job.companyName}</p>
+        </div>
+        <div className="JobCard-bottom">
+          {job.salary &&
+            <p className='card-text JobCard-text'> {`Salary: ${SalaryFormatter.format(job.salary)}`}</p>}
+          <p className='card-text JobCard-text'>Equity: {job.equity}</p>
+        </div>
       </div>
     </div>
   );

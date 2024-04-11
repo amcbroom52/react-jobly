@@ -5,6 +5,7 @@ import JobCardList from "./JobCardList";
 import JoblyApi from "../api/api";
 import LoadingScreen from "../common/LoadingScreen";
 import userContext from "../user/userContext";
+import "./JobList.css";
 
 /** Component for searching and rendering list of job cards.
  *
@@ -23,7 +24,7 @@ function JobList() {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const {user} = useContext(userContext);
+  const { user } = useContext(userContext);
   console.log("in rendering JobList");
 
   useEffect(
@@ -48,16 +49,16 @@ function JobList() {
   if (jobs.isLoading) return <LoadingScreen />;
 
   return (
-    <div>
+    <div className="JobList col-10">
       <SearchForm handleSearch={fetchJobs} />
-      <h1>
+      <h1 className="JobList-title">
         {searchQuery ? `Search Results for '${searchQuery}'` : "All Jobs"}
       </h1>
 
       <div>
         {jobs.data.length !== 0
           ? <JobCardList jobs={jobs.data} />
-          : <h3>Sorry, no results found!</h3>}
+          : <h3 className="JobList-NotFound">Sorry, no results found!</h3>}
       </div>
     </div>
   );
