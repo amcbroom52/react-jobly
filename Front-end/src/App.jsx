@@ -3,9 +3,10 @@ import NavBar from "./common/NavBar";
 import RouteList from "./common/RouteList";
 import userContext from "./user/userContext";
 import { useEffect, useState } from "react";
-import AnonNavBar from "./common/AnonNavBar";
 import JoblyApi from "./api/api";
-import { getTokenPayload } from "./common/utils";
+import { jwtDecode } from "jwt-decode";
+import { getLocalUser, setLocalUser } from "./common/utils";
+import LoadingScreen from "./common/LoadingScreen";
 
 /** Component for entire page.
  *
@@ -18,14 +19,17 @@ import { getTokenPayload } from "./common/utils";
 function App() {
   console.log("in rendering App");
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(getLocalUser);
 
   useEffect(
     function setUserOnTokenChange() {
       async function updateUser() {
         if (token) {
-          const { username } = getTokenPayload(token);
+          JoblyApi.token = token;
+          const { username } = jwtDecode(token);
           const userData = await JoblyApi.getUser(username);
+
+          setLocalUser(token);
           setUser({
             username: userData.username,
             firstName: userData.firstName,
@@ -34,6 +38,10 @@ function App() {
             jobs: userData.jobs,
             isAdmin: userData.isAdmin,
           });
+        } else {
+          setUser(null);
+          JoblyApi.token = null;
+          localStorage.removeItem("token");
         }
       }
       updateUser();
@@ -45,30 +53,27 @@ function App() {
   async function login(username, password) {
     const resp = await JoblyApi.login(username, password);
     setToken(resp.token);
-    console.log('resp=',resp)
   }
 
   /** Takes object like {username, password, firstName, lastName, email}.
    * Logs in user and updates context. */
   async function signup(inputValues) {
     const resp = await JoblyApi.signup(inputValues);
-    // if ("error" in resp) {
-    //   return;
-    // }
     setToken(resp.token);
   }
 
-  // TODO: just set token -> put else in useEffect to setUser to null
+  /** Clears all context and state data about user */
   function logout() {
     setToken(null);
-    setUser(null);
   }
+
+  if (token && !user) return <LoadingScreen />;
 
   return (
     <div className="App">
       <userContext.Provider value={{ user }}>
         <BrowserRouter>
-          {user ? <NavBar logout={logout} /> : <AnonNavBar />}
+          <NavBar logout={logout} />
           <RouteList login={login} signup={signup} />
         </BrowserRouter>
       </userContext.Provider>

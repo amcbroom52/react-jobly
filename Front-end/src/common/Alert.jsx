@@ -6,10 +6,10 @@
  *
  * State: none
  *
- * {LoginForm, ProfileForm, SignupForm} -> Alert
+ * {LoginForm, ProfileForm, SignupForm, ErrorPage} -> Alert
  */
 function Alert({text, type}) {
-  return <div class={`alert alert-${type}`} role="alert">{text}</div>;
+  return <div className={`alert alert-${type}`} role="alert">{text}</div>;
 }
 
 export default Alert;

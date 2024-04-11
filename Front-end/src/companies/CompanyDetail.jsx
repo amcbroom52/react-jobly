@@ -4,6 +4,7 @@ import JoblyApi from "../api/api";
 import JobCardList from "../jobs/JobCardList";
 import LoadingScreen from "../common/LoadingScreen";
 import userContext from "../user/userContext";
+import ErrorPage from "../common/ErrorPage";
 
 /** Component for rendering company information.
  *
@@ -21,7 +22,8 @@ function CompanyDetail() {
     data: null,
     isLoading: true
   });
-  const {user} = useContext(userContext);
+  const [errors, setErrors] = useState(null);
+  const { user } = useContext(userContext);
   console.log("in rendering CompanyDetail");
 
 
@@ -29,19 +31,22 @@ function CompanyDetail() {
 
   useEffect(function fetchCompanyOnMount() {
     async function fetchCompany() {
-      const company = await JoblyApi.getCompany(handle);
-      setCompany({
-        data: company,
-        isLoading: false
-      });
       console.log("in useEffect CompanyDetail");
+      try {
+        const company = await JoblyApi.getCompany(handle);
+        setCompany({
+          data: company,
+          isLoading: false
+        });
+      } catch (err) {
+        setErrors(err);
+      }
 
     }
     fetchCompany();
   }, []);
 
-  if (!user) return <Navigate to='/'/>
-
+  if (errors) return <ErrorPage errors={errors} />;
   if (company.isLoading) return <LoadingScreen />;
 
   return (

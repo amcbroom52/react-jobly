@@ -1,3 +1,4 @@
+
 /** Returns formatter for salaries. */
 const SalaryFormatter = Intl.NumberFormat("en-US", {
   style: "currency",
@@ -6,21 +7,13 @@ const SalaryFormatter = Intl.NumberFormat("en-US", {
 });
 
 /** Sets token in local storage */
-function setLocalUser(token, username) {
+function setLocalUser(token) {
   localStorage.setItem("token", token);
 }
 
 /** Gets token from local storage */
 function getLocalUser() {
-  return {
-    token: localStorage.getItem("token"),
-  };
+  return localStorage.getItem("token");
 }
 
-// TODO: use jwt-decode library
-/** Decodes token payload */
-function getTokenPayload(token) {
-  return JSON.parse(atob(token.split(".")[1]));
-}
-
-export { SalaryFormatter, setLocalUser, getLocalUser, getTokenPayload };
+export { SalaryFormatter, setLocalUser, getLocalUser };

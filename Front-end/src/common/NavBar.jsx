@@ -15,17 +15,36 @@ function NavBar({ logout }) {
   console.log("in rendering NavBar");
   const { user } = useContext(userContext);
 
-  return (
-    <div className="NavBar">
-      <div className="NavBar-left">
-        <NavLink className="NavBar-link-home" to="/">Jobly</NavLink>
+  /** Renders NavBar for logged out user */
+  function renderAnonRight() {
+    return (
+      <div className="NavBar-right">
+        <NavLink className="NavBar-link" to="/login">Log In</NavLink>
+        <NavLink className="NavBar-link" to="/signup">Sign Up</NavLink>
       </div>
+    );
+  }
+
+  /** Renders NavBar for logged in user */
+  function renderUserRight() {
+    return (
       <div className="NavBar-right">
         <NavLink className="NavBar-link" to="/companies">Companies</NavLink>
         <NavLink className="NavBar-link" to="/jobs">Jobs</NavLink>
         <NavLink className="NavBar-link" to="/profile">Profile</NavLink>
         <NavLink className="NavBar-link" to="/" onClick={logout}>Logout {user.username}</NavLink>
       </div>
+    );
+  }
+
+  return (
+    <div className="NavBar">
+      <div className="NavBar-left">
+        <NavLink className="NavBar-link-home" to="/">Jobly</NavLink>
+      </div>
+      {user
+        ? renderUserRight()
+        : renderAnonRight()}
     </div>
   );
 }
