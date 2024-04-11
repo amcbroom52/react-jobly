@@ -8,6 +8,8 @@ import "./NavBar.css";
  * Props: none
  */
 
+// TODO: consolidate in one nav bar
+// functions to call appropriate navbar
 function AnonNavBar() {
   console.log("in rendering NavBar");
 

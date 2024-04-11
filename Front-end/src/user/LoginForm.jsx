@@ -1,5 +1,7 @@
 import { useState } from "react";
 import {useNavigate} from 'react-router-dom';
+import Alert from "../common/Alert";
+import {v4 as uuid} from 'uuid';
 
 const INITIAL_STATE = {
     username: '',
@@ -17,6 +19,7 @@ const INITIAL_STATE = {
  */
 function LoginForm({loginUser}) {
     const [inputValues, setInputValues] = useState(INITIAL_STATE);
+    const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
     /** updates inputValues. */
@@ -28,10 +31,14 @@ function LoginForm({loginUser}) {
     }
 
     /** Calls fn in parent. */
-    function handleSubmit(evt) {
+    async function handleSubmit(evt) {
         evt.preventDefault();
-        loginUser(inputValues.username, inputValues.password);
-        navigate('/');
+        try {
+            await loginUser(inputValues.username, inputValues.password);
+            navigate('/');
+        } catch (err) {
+            setErrors(err);
+        }
     }
 
     return (
@@ -54,6 +61,9 @@ function LoginForm({loginUser}) {
                 />
                 <button type='submit'>Submit</button>
             </form>
+            {errors.length > 0 && errors.map(e =>
+                <Alert key={uuid()} text={e} type='danger' />
+            )}
         </div>
 
     )
