@@ -107,6 +107,15 @@ class JoblyApi {
     const res = await this.request(`users/${username}`);
     return res.user;
   }
+
+  /** Takes obj like {username, firstName, lastName, email}
+   * and updates user info.
+   * Returns updated info like {username, firstName, lastName, email, isAdmin }
+   * */
+  static async updateUser({username, ...data}) {
+    const res = await this.request(`users/${username}`, data, 'PATCH');
+    return res.user;
+  }
 }
 
 export default JoblyApi;

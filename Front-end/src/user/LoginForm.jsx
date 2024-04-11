@@ -61,7 +61,7 @@ function LoginForm({loginUser}) {
                 />
                 <button type='submit'>Submit</button>
             </form>
-            {errors.length > 0 && errors.map(e =>
+            {errors.map(e =>
                 <Alert key={uuid()} text={e} type='danger' />
             )}
         </div>

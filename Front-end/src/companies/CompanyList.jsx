@@ -61,8 +61,6 @@ function CompanyList() {
     setPageNum(pageNum => pageNum + 1);
   }
 
-  if (!user) return <Navigate to='/'/>
-
   if (companies.isLoading) return <LoadingScreen />;
 
   return (

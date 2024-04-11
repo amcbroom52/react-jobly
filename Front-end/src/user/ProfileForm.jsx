@@ -1,19 +1,27 @@
 import { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import userContext from "./userContext";
+import Alert from "../common/Alert";
+import {v4 as uuid} from 'uuid';
 
 /** Component for Profile edit form
  *
  * props:
- * - updateProfile(): fn to call in parent
+ * - updateUser(): fn to call in parent
  *
  * State: inputValues
  *
  * App -> ProfileForm
  */
-function ProfileForm({ updateProfile }) {
+function ProfileForm({ updateUser }) {
   const { user } = useContext(userContext);
-  const [inputValues, setInputValues] = useState(user);
+  const [inputValues, setInputValues] = useState({
+    username: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email
+  });
+  const [alerts, setAlerts] = useState([]);
 
   /** updates inputValues. */
   function handleChange(evt) {
@@ -24,12 +32,15 @@ function ProfileForm({ updateProfile }) {
   }
 
   /** Calls fn in parent. */
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     evt.preventDefault();
-    updateProfile(inputValues);
+    try {
+      await updateUser(inputValues);
+      setAlerts([{text: 'Updated succesfully.', type: 'success'}]);
+    } catch (err) {
+      setAlerts(err.map(e => ({text: e, type: 'danger'})));
+    }
   }
-
-  if (!user) return <Navigate to='/'/>
 
   return (
     <div className="LoginPage">
@@ -64,6 +75,9 @@ function ProfileForm({ updateProfile }) {
           onChange={handleChange} />
         <button type="submit">Save Changes</button>
       </form>
+      {alerts.map(a =>
+                <Alert key={uuid()} text={a.text} type={a.type} />
+            )}
     </div>
   );
 }

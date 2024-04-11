@@ -85,8 +85,7 @@ function SignupForm({ signupUser }) {
         />
         <button type="submit">Submit</button>
       </form>
-      {errors.length > 0 &&
-        errors.map((e) => <Alert key={uuid()} text={e} type="danger" />)}
+      {errors.map((e) => <Alert key={uuid()} text={e} type="danger" />)}
     </div>
   );
 }

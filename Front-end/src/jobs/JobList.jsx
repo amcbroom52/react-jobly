@@ -44,8 +44,6 @@ function JobList() {
     setSearchQuery(query.trim());
   }
 
-  if (!user) return <Navigate to='/'/>;
-
   //   if (jobs.isLoading) return <h3>Loading...</h3>;
   if (jobs.isLoading) return <LoadingScreen />;
 

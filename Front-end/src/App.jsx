@@ -67,6 +67,15 @@ function App() {
     setToken(null);
   }
 
+  /** Updates user with new info. Takes object like {username, firstName, lastName, email}. */
+  async function updateUser(data) {
+    const updatedData = await JoblyApi.updateUser(data);
+    setUser(user => ({
+      ...user,
+      ...updatedData
+    }));
+  }
+
   if (token && !user) return <LoadingScreen />;
 
   return (
@@ -74,7 +83,7 @@ function App() {
       <userContext.Provider value={{ user }}>
         <BrowserRouter>
           <NavBar logout={logout} />
-          <RouteList login={login} signup={signup} />
+          <RouteList login={login} signup={signup} updateUser={updateUser} />
         </BrowserRouter>
       </userContext.Provider>
     </div>
