@@ -22,21 +22,28 @@ function App() {
   useEffect(function setUserOnTokenChange() {
     async function updateUser() {
       if (token) {
-        const user = await JoblyApi.getUser(user.username);
-        setUser({...user, token: resp.token});
+        const userData = await JoblyApi.getUser(user.username);
+        setUser({
+          username: userData.username,
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          jobs: userData.jobs,
+          isAdmin: userData.isAdmin,
+        });
       }
     }
     updateUser();
-  }, [token])
+  }, [token]);
 
-/** Takes username and password. Logs in user and updates context. */
+  /** Takes username and password. Logs in user and updates context. */
   async function login(username, password) {
     const resp = await JoblyApi.login(username, password);
     if ('error' in resp) {
       return;
     }
     setToken(resp.token);
-    setUser({username});
+    setUser({ username });
   }
 
   /** Takes object like {username, password, firstName, lastName, email}.
@@ -47,18 +54,19 @@ function App() {
       return;
     }
     setToken(resp.token);
-    setUser({username});
+    setUser({ username: inputValues.username });
   }
 
   function logout() {
-
+    setToken(null);
+    setUser(null);
   }
 
   return (
     <div className="App">
-      <userContext.Provider value={{user}}>
+      <userContext.Provider value={{ user }}>
         <BrowserRouter>
-          {user ? <NavBar /> : <AnonNavBar />}
+          {user ? <NavBar logout={logout} /> : <AnonNavBar />}
           <RouteList login={login} signup={signup} />
         </BrowserRouter>
       </userContext.Provider>

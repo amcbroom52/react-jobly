@@ -4,4 +4,15 @@ const SalaryFormatter = Intl.NumberFormat('en-US', {
   maximumFractionDigits: 0
 });
 
-export {SalaryFormatter};
+function setLocalUser(token, username) {
+  localStorage.setItem("token", token);
+  localStorage.setItem("username", username);
+}
+function getLocalUser() {
+  return {
+  token: localStorage.getItem("token"),
+  username: localStorage.getItem("username")
+  }
+}
+
+export {SalaryFormatter, setLocalUser, getLocalUser};

@@ -11,9 +11,9 @@ import userContext from "../user/userContext";
  * - logOut(): fn to call in parent
  */
 
-function NavBar({logOut}) {
+function NavBar({ logout }) {
   console.log("in rendering NavBar");
-  const {user} = useContext(userContext);
+  const { user } = useContext(userContext);
 
   return (
     <div className="NavBar">
@@ -24,7 +24,7 @@ function NavBar({logOut}) {
         <NavLink className="NavBar-link" to="/companies">Companies</NavLink>
         <NavLink className="NavBar-link" to="/jobs">Jobs</NavLink>
         <NavLink className="NavBar-link" to="/profile">Profile</NavLink>
-        <NavLink className="NavBar-link" to="/" onClick={logOut}>Logout {user.username}</NavLink>
+        <NavLink className="NavBar-link" to="/" onClick={logout}>Logout {user.username}</NavLink>
       </div>
     </div>
   );
