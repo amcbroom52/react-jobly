@@ -1,10 +1,10 @@
-import { useEffect, useState, useContext } from "react";
-import { useParams, Navigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import JoblyApi from "../api/api";
 import JobCardList from "../jobs/JobCardList";
 import LoadingScreen from "../common/LoadingScreen";
-import userContext from "../user/userContext";
 import ErrorPage from "../common/ErrorPage";
+import { v4 as uuid } from 'uuid';
 import "./CompanyDetail.css";
 
 /** Component for rendering company information.
@@ -18,17 +18,17 @@ import "./CompanyDetail.css";
  * RouteList -> Company Detail -> JobCardsList
  */
 
-function CompanyDetail() {
+function CompanyDetail({applyToJob}) {
   const [company, setCompany] = useState({
     data: null,
     isLoading: true
   });
-  const [errors, setErrors] = useState(null);
-  const { user } = useContext(userContext);
+  const [errors, setErrors] = useState([]);
   console.log("in rendering CompanyDetail");
 
 
   const { handle } = useParams();
+  console.log("handle", handle);
 
   useEffect(function fetchCompanyOnMount() {
     async function fetchCompany() {
@@ -41,20 +41,22 @@ function CompanyDetail() {
         });
       } catch (err) {
         setErrors(err);
+        console.log("err", err);
       }
 
     }
     fetchCompany();
   }, []);
 
-  if (errors) return <ErrorPage errors={errors} />;
+  if (errors.length > 0) return <ErrorPage errors={errors} />;
   if (company.isLoading) return <LoadingScreen />;
 
   return (
     <div className="col-9 CompanyDetail">
       <h3>{company.data.name}</h3>
       <h5>{company.data.description}</h5>
-      <JobCardList jobs={company.data.jobs} />
+      <JobCardList jobs={company.data.jobs} applyToJob={applyToJob}/>
+      {errors.map(e => <Alert key={uuid()} text={e} type="danger" />)}
     </div>
   );
 }

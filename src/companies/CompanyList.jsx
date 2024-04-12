@@ -5,7 +5,7 @@ import SearchForm from "../common/SearchForm";
 import CompanyCardList from "./CompanyCardList";
 import LoadingScreen from "../common/LoadingScreen";
 import PaginationButton from "../common/PaginationButton";
-import userContext from "../user/userContext";
+import { v4 as uuid } from 'uuid';
 import "./CompanyList.css";
 
 const CARDS_PER_PAGE = 20;
@@ -21,8 +21,6 @@ const CARDS_PER_PAGE = 20;
  * RouteList -> CompanyList -> {CompanyCardsList, SearchForm}
  */
 
-// TODO: error handling
-// TODO: window.scroll(0,0)
 function CompanyList() {
   const [companies, setCompanies] = useState({
     data: null,
@@ -31,6 +29,7 @@ function CompanyList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams(new URLSearchParams(document.location));
   const [pageNum, setPageNum] = useState(Number(searchParams.get("page")) || 1);
+  const [errors, setErrors] = useState([]);
 
   console.log("in rendering CompanyList");
 
@@ -41,30 +40,32 @@ function CompanyList() {
 
   /** Takes query string, fetches companies, and set companies. */
   async function fetchCompanies(query = "") {
-    const companies = await JoblyApi.getCompanies(query);
-    setCompanies({
-      data: companies,
-      isLoading: false,
-    });
-    setSearchQuery(query.trim());
+    try {
+      const companies = await JoblyApi.getCompanies(query);
+      setCompanies({
+        data: companies,
+        isLoading: false,
+      });
+    } catch (err) {
+      setErrors(err);
+    } finally {
+      setSearchQuery(query.trim());
+    }
   }
 
   function getPrevPage() {
     setSearchParams({ page: pageNum - 1 });
     setPageNum((pageNum) => pageNum - 1);
-    // window.scrollTo(0,0);
   }
 
   function getNextPage() {
     setSearchParams({ page: pageNum + 1 });
     setPageNum((pageNum) => pageNum + 1);
-    // window.scrollTo(0,0);
   }
 
   if (companies.isLoading) return <LoadingScreen />;
 
-  // TODO: Math.ceil(companies.data.length / CARDS_PER_PAGE) save into variable
-  // TODO: no classname in component
+  const lastPage = Math.ceil(companies.data.length / CARDS_PER_PAGE);
 
   return (
     <div className="CompanyList col-10">
@@ -75,17 +76,17 @@ function CompanyList() {
       </h1>
 
       <div>
-        {companies.data.length !== 0 &&
-        pageNum <= Math.ceil(companies.data.length / CARDS_PER_PAGE) ? (
-          <CompanyCardList
-            companies={companies.data.slice(
-              CARDS_PER_PAGE * (pageNum - 1),
-              CARDS_PER_PAGE * pageNum
-            )}
-          />
-        ) : (
-          <h3>Sorry, no results found!</h3>
-        )}
+        {companies.data.length !== 0 && pageNum <= lastPage
+          ? (
+            <CompanyCardList
+              companies={companies.data.slice(
+                CARDS_PER_PAGE * (pageNum - 1),
+                CARDS_PER_PAGE * pageNum
+              )}
+            />
+          ) : (
+            <h3>Sorry, no results found!</h3>
+          )}
       </div>
       <div className="CompanyList-page-btns">
         <PaginationButton
@@ -96,11 +97,10 @@ function CompanyList() {
         <PaginationButton
           getPage={getNextPage}
           text="Next page"
-          disabled={
-            pageNum >= Math.ceil(companies.data.length / CARDS_PER_PAGE)
-          }
+          disabled={pageNum >= lastPage}
         />
       </div>
+      {errors.map(e => <Alert key={uuid()} text={e} type="danger" />)}
     </div>
   );
 }

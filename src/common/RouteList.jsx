@@ -32,7 +32,7 @@ function RouteList({ login, signup, updateUser, applyToJob }) {
             {user
                 ? <>
                     <Route path='/companies' element={<CompanyList />} />
-                    <Route path='/companies/:handle' element={<CompanyDetail />} />
+                    <Route path='/companies/:handle' element={<CompanyDetail applyToJob={applyToJob}/>} />
                     <Route path='/jobs' element={<JobList applyToJob={applyToJob} />} />
                     <Route path='/profile' element={<ProfileForm updateUser={updateUser} />} />
                 </>

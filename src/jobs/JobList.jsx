@@ -1,10 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import SearchForm from "../common/SearchForm";
 import JobCardList from "./JobCardList";
 import JoblyApi from "../api/api";
 import LoadingScreen from "../common/LoadingScreen";
-import userContext from "../user/userContext";
+import { v4 as uuid } from 'uuid';
 import "./JobList.css";
+import Alert from "../common/Alert";
+import PaginationButton from "../common/PaginationButton";
+
+const CARDS_PER_PAGE = 20;
 
 /** Component for searching and rendering list of job cards.
  *
@@ -23,6 +28,9 @@ function JobList({ applyToJob }) {
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams(new URLSearchParams(document.location));
+  const [pageNum, setPageNum] = useState(Number(searchParams.get("page")) || 1);
+  const [errors, setErrors] = useState([]);
   console.log("in rendering JobList");
 
   useEffect(function fetchJobsOnMount() {
@@ -32,16 +40,32 @@ function JobList({ applyToJob }) {
 
   /** Takes query string, fetches jobs, and set jobs. */
   async function fetchJobs(query = "") {
-    const jobs = await JoblyApi.getJobs(query);
-    setJobs({
-      data: jobs,
-      isLoading: false,
-    });
-    setSearchQuery(query.trim());
+    try {
+      const jobs = await JoblyApi.getJobs(query);
+      setJobs({
+        data: jobs,
+        isLoading: false,
+      });
+    } catch (err) {
+      setErrors(err);
+    } finally {
+      setSearchQuery(query.trim());
+    }
   }
 
-  //   if (jobs.isLoading) return <h3>Loading...</h3>;
+  function getPrevPage() {
+    setSearchParams({ page: pageNum - 1 });
+    setPageNum((pageNum) => pageNum - 1);
+  }
+
+  function getNextPage() {
+    setSearchParams({ page: pageNum + 1 });
+    setPageNum((pageNum) => pageNum + 1);
+  }
+
   if (jobs.isLoading) return <LoadingScreen />;
+
+  const lastPage = Math.ceil(jobs.data.length / CARDS_PER_PAGE);
 
   return (
     <div className="JobList col-10">
@@ -51,12 +75,30 @@ function JobList({ applyToJob }) {
       </h1>
 
       <div>
-        {jobs.data.length !== 0 ? (
-          <JobCardList jobs={jobs.data} applyToJob={applyToJob} />
+        {jobs.data.length !== 0 && pageNum <= lastPage ? (
+          <JobCardList
+            jobs={jobs.data.slice(
+              CARDS_PER_PAGE * (pageNum - 1),
+              CARDS_PER_PAGE * pageNum
+            )}
+            applyToJob={applyToJob} />
         ) : (
           <h3 className="JobList-NotFound">Sorry, no results found!</h3>
         )}
       </div>
+      <div className="CompanyList-page-btns">
+        <PaginationButton
+          getPage={getPrevPage}
+          text="Previous page"
+          disabled={pageNum <= 1}
+        />
+        <PaginationButton
+          getPage={getNextPage}
+          text="Next page"
+          disabled={pageNum >= lastPage}
+        />
+      </div>
+      {errors.map(e => <Alert key={uuid()} text={e} type="danger" />)}
     </div>
   );
 }
