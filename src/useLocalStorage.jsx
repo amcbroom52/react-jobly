@@ -1,25 +1,35 @@
-import { set } from "lodash";
 import { useEffect, useState } from "react";
 
+// function useLocalStorage(key) {
+//     console.log('in useLocalStorage hook');
+//     const [data, setData] = useState(localStorage.getItem(key));
+
+//     function updateData(newData) {
+//         if (!newData) {
+//             setData(null);
+//             localStorage.removeItem(key);
+//         } else {
+//             setData(newData);
+//             localStorage.setItem(key, newData);
+//         }
+//     }
+
+//     return [data, updateData];
+// }
+
 function useLocalStorage(key) {
-    console.log('in useLocalStorage hook')
-    const [data, setData] = useState(null);
+    console.log('in useLocalStorage hook');
+    const [data, setData] = useState(localStorage.getItem(key));
 
     useEffect(function getDataFromStorage() {
-        setData(localStorage.getItem(key));
-    }, []);
-
-    function updateData(newData) {
-        if (!newData) {
+        if (!data) {
             localStorage.removeItem(key);
-            setData(null);
         } else {
-            localStorage.setItem(key, newData);
-            setData(newData);
+            localStorage.setItem(key, data);
         }
-    }
+    }, [data]);
 
-    return [data, updateData];
+    return [data, setData];
 }
 
 export default useLocalStorage;
