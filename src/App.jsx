@@ -7,6 +7,7 @@ import JoblyApi from "./api/api";
 import { jwtDecode } from "jwt-decode";
 import { getLocalUser, setLocalUser } from "./common/utils";
 import LoadingScreen from "./common/LoadingScreen";
+import useLocalStorage from "./useLocalStorage";
 
 /** Component for entire page.
  *
@@ -19,7 +20,7 @@ import LoadingScreen from "./common/LoadingScreen";
 function App() {
   console.log("in rendering App");
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(getLocalUser);
+  const [token, setToken] = useLocalStorage();
 
   useEffect(
     function setUserOnTokenChange() {
@@ -28,7 +29,6 @@ function App() {
           JoblyApi.token = token;
           const { username } = jwtDecode(token);
           const userData = await JoblyApi.getUser(username);
-
           setLocalUser(token);
           setUser({
             username: userData.username,
@@ -41,7 +41,6 @@ function App() {
         } else {
           setUser(null);
           JoblyApi.token = null;
-          localStorage.removeItem("token");
         }
       }
       updateUser();
@@ -70,9 +69,9 @@ function App() {
   /** Updates user with new info. Takes object like {username, firstName, lastName, email}. */
   async function updateUser(data) {
     const updatedData = await JoblyApi.updateUser(data);
-    setUser(user => ({
+    setUser((user) => ({
       ...user,
-      ...updatedData
+      ...updatedData,
     }));
   }
 
