@@ -22,7 +22,7 @@ import userContext from '../user/userContext';
  */
 
 
-function RouteList({ login, signup, updateUser }) {
+function RouteList({ login, signup, updateUser, applyToJob }) {
     console.log("in rendering RouteList");
     const { user } = useContext(userContext);
 
@@ -33,7 +33,7 @@ function RouteList({ login, signup, updateUser }) {
                 ? <>
                     <Route path='/companies' element={<CompanyList />} />
                     <Route path='/companies/:handle' element={<CompanyDetail />} />
-                    <Route path='/jobs' element={<JobList />} />
+                    <Route path='/jobs' element={<JobList applyToJob={applyToJob} />} />
                     <Route path='/profile' element={<ProfileForm updateUser={updateUser} />} />
                 </>
                 : <>

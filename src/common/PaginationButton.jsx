@@ -9,9 +9,9 @@
  * {CompanyList, JobList} -> PaginationButton
  */
 
-function PaginationButton({getPage, text}) {
+function PaginationButton({getPage, text, disabled}) {
     return (
-        <button className="page-link" onClick={getPage}>{text}</button>
+        <button className="btn btn-light" onClick={getPage} disabled={disabled}>{text}</button>
     )
 }
 

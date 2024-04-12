@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useLocalStorage from "./useLocalStorage";
-import JoblyApi from "./api/api";
+import JoblyApi from "../api/api";
 import { jwtDecode } from "jwt-decode";
 
 function useAuth(initialToken) {
@@ -18,7 +18,7 @@ function useAuth(initialToken) {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        jobs: userData.jobs,
+        jobs: userData.applications,
         isAdmin: userData.isAdmin,
       });
     }
@@ -52,7 +52,15 @@ function useAuth(initialToken) {
     setToken(null);
   }
 
-  return { user, login, signup, update, logout };
+  async function applyToJob(username, id) {
+    await JoblyApi.applyToJob(username, id);
+    setUser((user) => ({
+      ...user,
+      jobs: [...user.jobs, id]
+    }))
+  }
+
+  return { user, login, signup, update, logout, token, applyToJob };
 }
 
 export default useAuth;

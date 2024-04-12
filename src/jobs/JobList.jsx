@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
 import SearchForm from "../common/SearchForm";
 import JobCardList from "./JobCardList";
 import JoblyApi from "../api/api";
@@ -18,22 +17,18 @@ import "./JobList.css";
  * RouteList -> JobList -> {JobCardsList, SearchForm}
  */
 
-function JobList() {
+function JobList({ applyToJob }) {
   const [jobs, setJobs] = useState({
     data: null,
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const { user } = useContext(userContext);
   console.log("in rendering JobList");
 
-  useEffect(
-    function fetchJobsOnMount() {
-      fetchJobs(searchQuery);
-      console.log("in useEffect JobList");
-    },
-    []
-  );
+  useEffect(function fetchJobsOnMount() {
+    fetchJobs(searchQuery);
+    console.log("in useEffect JobList");
+  }, []);
 
   /** Takes query string, fetches jobs, and set jobs. */
   async function fetchJobs(query = "") {
@@ -56,9 +51,11 @@ function JobList() {
       </h1>
 
       <div>
-        {jobs.data.length !== 0
-          ? <JobCardList jobs={jobs.data} />
-          : <h3 className="JobList-NotFound">Sorry, no results found!</h3>}
+        {jobs.data.length !== 0 ? (
+          <JobCardList jobs={jobs.data} applyToJob={applyToJob} />
+        ) : (
+          <h3 className="JobList-NotFound">Sorry, no results found!</h3>
+        )}
       </div>
     </div>
   );

@@ -21,26 +21,23 @@ const CARDS_PER_PAGE = 20;
  * RouteList -> CompanyList -> {CompanyCardsList, SearchForm}
  */
 
+// TODO: error handling
+// TODO: window.scroll(0,0)
 function CompanyList() {
   const [companies, setCompanies] = useState({
     data: null,
     isLoading: true,
   });
   const [searchQuery, setSearchQuery] = useState("");
-  const params = new URL(document.location).searchParams;
-  const [searchParams, setSearchParams] = useSearchParams({ page: params.get('page') });
-  const [pageNum, setPageNum] = useState(Number(searchParams.get('page')) || 1);
-  const { user } = useContext(userContext);
+  const [searchParams, setSearchParams] = useSearchParams(new URLSearchParams(document.location));
+  const [pageNum, setPageNum] = useState(Number(searchParams.get("page")) || 1);
 
   console.log("in rendering CompanyList");
 
-  useEffect(
-    function fetchCompaniesOnMount() {
-      fetchCompanies();
-      console.log("in useEffect CompanyList");
-    },
-    []
-  );
+  useEffect(function fetchCompaniesOnMount() {
+    fetchCompanies();
+    console.log("in useEffect CompanyList");
+  }, []);
 
   /** Takes query string, fetches companies, and set companies. */
   async function fetchCompanies(query = "") {
@@ -54,15 +51,20 @@ function CompanyList() {
 
   function getPrevPage() {
     setSearchParams({ page: pageNum - 1 });
-    setPageNum(pageNum => pageNum - 1);
+    setPageNum((pageNum) => pageNum - 1);
+    // window.scrollTo(0,0);
   }
 
   function getNextPage() {
     setSearchParams({ page: pageNum + 1 });
-    setPageNum(pageNum => pageNum + 1);
+    setPageNum((pageNum) => pageNum + 1);
+    // window.scrollTo(0,0);
   }
 
   if (companies.isLoading) return <LoadingScreen />;
+
+  // TODO: Math.ceil(companies.data.length / CARDS_PER_PAGE) save into variable
+  // TODO: no classname in component
 
   return (
     <div className="CompanyList col-10">
@@ -73,13 +75,31 @@ function CompanyList() {
       </h1>
 
       <div>
-        {companies.data.length !== 0 && pageNum <= Math.ceil(companies.data.length / CARDS_PER_PAGE)
-          ? <CompanyCardList companies={companies.data.slice(CARDS_PER_PAGE * (pageNum - 1), CARDS_PER_PAGE * pageNum)} />
-          : <h3>Sorry, no results found!</h3>}
+        {companies.data.length !== 0 &&
+        pageNum <= Math.ceil(companies.data.length / CARDS_PER_PAGE) ? (
+          <CompanyCardList
+            companies={companies.data.slice(
+              CARDS_PER_PAGE * (pageNum - 1),
+              CARDS_PER_PAGE * pageNum
+            )}
+          />
+        ) : (
+          <h3>Sorry, no results found!</h3>
+        )}
       </div>
-      <div>
-        {pageNum > 1 && <PaginationButton getPage={getPrevPage} text='Previous page' />}
-        {pageNum < Math.ceil(companies.data.length / CARDS_PER_PAGE) && <PaginationButton getPage={getNextPage} text='Next page' />}
+      <div className="CompanyList-page-btns">
+        <PaginationButton
+          getPage={getPrevPage}
+          text="Previous page"
+          disabled={pageNum <= 1}
+        />
+        <PaginationButton
+          getPage={getNextPage}
+          text="Next page"
+          disabled={
+            pageNum >= Math.ceil(companies.data.length / CARDS_PER_PAGE)
+          }
+        />
       </div>
     </div>
   );

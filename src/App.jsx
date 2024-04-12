@@ -2,13 +2,13 @@ import { BrowserRouter } from "react-router-dom";
 import NavBar from "./common/NavBar";
 import RouteList from "./common/RouteList";
 import userContext from "./user/userContext";
-import { useEffect, useState } from "react";
-import JoblyApi from "./api/api";
-import { jwtDecode } from "jwt-decode";
-import { getLocalUser, setLocalUser } from "./common/utils";
+// import { useEffect, useState } from "react";
+// import JoblyApi from "./api/api";
+// import { jwtDecode } from "jwt-decode";
+// import { getLocalUser, setLocalUser } from "./common/utils";
 import LoadingScreen from "./common/LoadingScreen";
-import useLocalStorage from "./useLocalStorage";
-import useAuth from "./useAuth";
+// import useLocalStorage from "./useLocalStorage";
+import useAuth from "./hooks/useAuth";
 
 /** Component for entire page.
  *
@@ -20,14 +20,18 @@ import useAuth from "./useAuth";
 
 function App() {
   console.log("in rendering App");
-  const {user, login, signup, update, logout} = useAuth(null);
+  const { user, login, signup, update, logout, token, applyToJob } = useAuth(null);
+
+  if (token && !user) return <LoadingScreen />;
 
   return (
     <div className="App">
       <userContext.Provider value={{ user }}>
         <BrowserRouter>
           <NavBar logout={logout} />
-          <RouteList login={login} signup={signup} updateUser={update} />
+          <div className="pb-3">
+            <RouteList login={login} signup={signup} updateUser={update} applyToJob={applyToJob} />
+          </div>
         </BrowserRouter>
       </userContext.Provider>
     </div>

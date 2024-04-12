@@ -11,13 +11,13 @@ import "./JobCardList.css";
  * { JobList, CompanyDetail }-> JobCardList -> JobCard
  */
 
-function JobCardList({ jobs }) {
+function JobCardList({ jobs, applyToJob }) {
   console.log("in rendering JobCardList");
 
   return (
     <div className="JobCardList">
       {jobs.map((j) =>
-        <JobCard key={j.id} job={j} />
+        <JobCard key={j.id} job={j} applyToJob={applyToJob} />
       )}
     </div>
   );

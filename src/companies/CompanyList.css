@@ -5,3 +5,8 @@
 .CompanyList {
   margin: auto;
 }
+
+.CompanyList-page-btns {
+  display: flex;
+  justify-content: space-between;
+}
