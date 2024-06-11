@@ -15,7 +15,7 @@ import useAuth from "./hooks/useAuth";
 
 function App() {
   console.log("in rendering App");
-  const { user, login, signup, update, logout, token, applyToJob } = useAuth(null);
+  const { user, login, signup, update, logout, token, applyToJob } = useAuth("token");
 
   if (token && !user) return <LoadingScreen />;
 

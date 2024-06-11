@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 function useLocalStorage(key, initialValue) {
-    console.log('in useLocalStorage hook');
+    console.log('in useLocalStorage hook', key);
     const [data, setData] = useState(localStorage.getItem(key));
+    console.log("data", data);
+    console.log("localStorage", localStorage);
 
     useEffect(function getDataFromStorage() {
         if (!data) {
