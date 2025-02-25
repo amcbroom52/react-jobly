@@ -97,7 +97,7 @@ To setup the development environment for Jobly on your computer, follow the step
 
 Adrian McBroom - [LinkedIn](https://www.linkedin.com/in/adrian-mcbroom/) - adrianmcb2000@gmail.com
 
-Project Link: https://github.com/amcbroom52/album-rater
+Project Link: https://github.com/amcbroom52/react-jobly
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
